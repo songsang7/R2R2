@@ -1,0 +1,57 @@
+agent_type: 'simbaV2_spl'
+
+seed: ${seed}
+normalize_observation: true
+normalize_reward: true
+normalized_g_max: 5.0
+
+load_only_param: true
+load_param_key: null
+load_observation_normalizer: true
+load_reward_normalizer: true
+
+learning_rate_init: 1e-4
+learning_rate_end: 5e-5
+learning_rate_decay_rate: 1.0
+learning_rate_decay_step: ${eval:'int(${agent.learning_rate_decay_rate} * ${num_interaction_steps} * ${updates_per_interaction_step})'}
+
+encoder_lr_init: 3e-4
+encoder_lr_end: 5e-5
+
+encoder_hidden_dim: 128
+encoder_c_shift: 3.0
+encoder_scaler_init: ${eval:'math.sqrt(2 / ${agent.encoder_hidden_dim})'}
+encoder_scaler_scale: ${eval:'math.sqrt(2 / ${agent.encoder_hidden_dim})'}
+
+dynamics_hidden_dim: 256
+
+actor_num_blocks: 1
+actor_hidden_dim: ${agent.encoder_hidden_dim}
+actor_c_shift: 3.0
+actor_scaler_init: ${eval:'math.sqrt(2 / ${agent.actor_hidden_dim})'}
+actor_scaler_scale: ${eval:'math.sqrt(2 / ${agent.actor_hidden_dim})'}
+actor_alpha_init: ${eval:'1 / (${agent.actor_num_blocks} + 1)'}
+actor_alpha_scale: ${eval:'1 / math.sqrt(${agent.actor_hidden_dim})'}
+actor_bc_alpha: 0.0
+
+critic_use_cdq: ${env.episodic}
+critic_num_blocks: 2
+critic_hidden_dim: 512
+critic_emb_dim: ${agent.encoder_hidden_dim}
+critic_c_shift: 3.0
+critic_num_bins: 101
+critic_scaler_init: ${eval:'math.sqrt(2 / ${agent.critic_hidden_dim})'}
+critic_scaler_scale: ${eval:'math.sqrt(2 / ${agent.critic_hidden_dim})'}
+critic_min_v: ${eval:'-${agent.normalized_g_max}'}
+critic_max_v: ${eval:'${agent.normalized_g_max}'}
+critic_alpha_init: ${eval:'1 / (${agent.critic_num_blocks} + 1)'}
+critic_alpha_scale: ${eval:'1 / math.sqrt(${agent.critic_hidden_dim})'}
+
+target_tau: 0.005
+
+temp_initial_value: 0.01
+temp_target_entropy: null
+temp_target_entropy_coef: -0.5
+
+gamma: ${gamma}
+n_step: ${n_step}

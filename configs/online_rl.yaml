@@ -1,0 +1,41 @@
+##################################################################################
+# Common
+##################################################################################
+
+project_name: 'SimbaV2'
+group_name: 'test'
+exp_name: 'test'
+seed: 0
+server: 'local'
+save_path: 'results/${env.env_name}/${agent.agent_type}_utd${updates_per_interaction_step}/${seed}'
+load_path: null
+
+##################################################################################
+# Training
+##################################################################################
+
+# gamma value is set with a heuristic from TD-MPCv2
+eff_episode_len: ${eval:'${env.max_episode_steps} / ${env.action_repeat}'}
+gamma: ${eval:'max(min((${eff_episode_len} / 5 - 1) / (${eff_episode_len} / 5), 0.995), 0.95)'}
+n_step: 1
+
+num_train_envs: ${env.num_train_envs}
+num_env_steps: ${env.num_env_steps}
+action_repeat: ${env.action_repeat}
+
+num_interaction_steps: ${eval:'${num_env_steps} / (${num_train_envs} * ${action_repeat})'}
+updates_per_interaction_step: 1 # ${action_repeat}  # number of updates per interaction step.
+evaluation_per_interaction_step: 5_000   # evaluation frequency per interaction step.
+metrics_per_interaction_step: 50_000      # log metrics per interaction step.
+recording_per_interaction_step: 9999999999  # ${num_interaction_steps}   # video recording frequency per interaction step.
+logging_per_interaction_step: 10_000       # logging frequency per interaction step.
+save_checkpoint_per_interaction_step: ${num_interaction_steps}
+save_buffer_per_interaction_step: ${num_interaction_steps}
+num_eval_episodes: 10
+num_record_episodes: 1
+
+defaults:
+- _self_
+- agent: simbaV2_spl_r2r2
+- buffer: numpy_uniform
+- env: dmc
