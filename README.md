@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey.svg)](https://opensource.org/licenses/Apache-2.0)
 
-This is an official JAX implementation of "[R2R2: Robust Representation for Intensive Experience Reuse via Redundancy Reduction in Self-Predictive Learning](no-link)" to be presented at the Forty-Third International Conference on Machine Learning ([ICML 2026](https://icml.cc/virtual/2026/poster/62372)).
+This is an official JAX implementation of "[R2R2: Robust Representation for Intensive Experience Reuse via Redundancy Reduction in Self-Predictive Learning](https://arxiv.org/abs/2605.14026)" to be presented at the Forty-Third International Conference on Machine Learning ([ICML 2026](https://icml.cc/virtual/2026/poster/62372)).
 
 ## Installation
 
